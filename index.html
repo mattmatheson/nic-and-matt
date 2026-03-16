@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matt & Nic | A Friendship in Messages</title>
+    <style>
+        :root {
+            --imessage-blue: #007AFF;
+            --imessage-green: #34C759;
+            --imessage-grey: #E9E9EB;
+            --imessage-dark-grey: #8E8E93;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F2F2F7;
+            --text-primary: #1C1C1E;
+            --text-secondary: #3C3C43;
+            --bubble-shadow: 0 1px 2px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #FBFBFD 0%, #F5F5F7 100%);
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 20%, rgba(0,122,255,0.06) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(52,199,89,0.06) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(180deg, #65D36E 0%, #34C759 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 16px rgba(52,199,89,0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-icon svg {
+            width: 44px;
+            height: 44px;
+            fill: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.05;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 .matt { color: var(--imessage-blue); }
+        .hero h1 .amp { color: var(--imessage-dark-grey); font-weight: 400; }
+        .hero h1 .nic { color: var(--imessage-green); }
+
+        .hero-subtitle {
+            font-size: clamp(18px, 3vw, 28px);
+            font-weight: 400;
+            color: var(--text-secondary);
+            opacity: 0.7;
+            margin-bottom: 48px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--imessage-blue), var(--imessage-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--imessage-dark-grey);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 4px;
+        }
+
+        /* ===== SECTION HEADERS ===== */
+        .section-header {
+            text-align: center;
+            padding: 80px 20px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .section-header h2 {
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        /* ===== CONVERSATION SECTION ===== */
+        .conversation-section {
+            background: var(--bg-primary);
+            padding: 40px 20px 80px;
+        }
+
+        .conversation-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .conversation-header {
+            text-align: center;
+            padding: 16px 0 32px;
+            border-bottom: 0.5px solid rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+
+        .conversation-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--imessage-blue), var(--imessage-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 24px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .conversation-name {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .conversation-detail {
+            font-size: 13px;
+            color: var(--imessage-dark-grey);
+        }
+
+        .message-group {
+            margin-bottom: 32px;
+        }
+
+        .message-date {
+            text-align: center;
+            font-size: 12px;
+            color: var(--imessage-dark-grey);
+            margin: 24px 0 12px;
+        }
+
+        .bubble-row {
+            display: flex;
+            margin-bottom: 2px;
+        }
+
+        .bubble-row.sent {
+            justify-content: flex-end;
+        }
+
+        .bubble-row.received {
+            justify-content: flex-start;
+        }
+
+        .bubble {
+            max-width: 70%;
+            padding: 8px 14px;
+            border-radius: 18px;
+            font-size: 16px;
+            line-height: 1.4;
+            position: relative;
+            box-shadow: var(--bubble-shadow);
+        }
+
+        .bubble-row.sent .bubble {
+            background: var(--imessage-blue);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble-row.received .bubble {
+            background: var(--imessage-grey);
+            color: var(--text-primary);
+            border-bottom-left-radius: 4px;
+        }
+
+        .bubble-row.sent + .bubble-row.sent .bubble { border-top-right-radius: 4px; }
+        .bubble-row.received + .bubble-row.received .bubble { border-top-left-radius: 4px; }
+
+        .bubble-sender {
+            font-size: 11px;
+            color: var(--imessage-dark-grey);
+            margin-bottom: 2px;
+            margin-left: 14px;
+        }
+
+        /* ===== HIGHLIGHTS SECTION ===== */
+        .highlights {
+            padding: 80px 20px;
+            background: linear-gradient(180deg, #F5F5F7 0%, #FFFFFF 100%);
+        }
+
+        .highlights-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .highlight-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .highlight-emoji {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .highlight-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .highlight-quote {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .highlight-attribution {
+            font-size: 12px;
+            color: var(--imessage-dark-grey);
+            margin-top: 8px;
+        }
+
+        /* ===== VIDEO GALLERY ===== */
+        .video-section {
+            background: #000;
+            padding: 80px 20px;
+            color: white;
+        }
+
+        .video-section .section-header h2 {
+            color: white;
+        }
+
+        .video-section .section-header p {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .video-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .video-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: #1C1C1E;
+            transition: transform 0.2s ease;
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+        }
+
+        .video-card video {
+            width: 100%;
+            display: block;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: #000;
+        }
+
+        .video-card .video-info {
+            padding: 12px 16px;
+        }
+
+        .video-card .video-date {
+            font-size: 12px;
+            color: var(--imessage-dark-grey);
+        }
+
+        .video-card .video-name {
+            font-size: 15px;
+            font-weight: 500;
+            color: white;
+            margin-top: 2px;
+        }
+
+        .video-card .video-sender {
+            font-size: 12px;
+            color: var(--imessage-green);
+            margin-top: 4px;
+        }
+
+        .video-card .video-sender.matt {
+            color: var(--imessage-blue);
+        }
+
+        /* ===== PHOTO GALLERY ===== */
+        .photo-section {
+            padding: 80px 20px;
+            background: var(--bg-primary);
+        }
+
+        .photo-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 4px;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .photo-grid img:hover {
+            opacity: 0.85;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline-section {
+            padding: 80px 20px;
+            background: var(--bg-secondary);
+        }
+
+        .timeline {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--imessage-blue), var(--imessage-green));
+        }
+
+        .timeline-item {
+            padding-left: 52px;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--imessage-blue);
+        }
+
+        .timeline-item:nth-child(even)::before {
+            border-color: var(--imessage-green);
+        }
+
+        .timeline-date {
+            font-size: 13px;
+            color: var(--imessage-dark-grey);
+            margin-bottom: 4px;
+        }
+
+        .timeline-content {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, var(--bg-secondary) 0%, #E8E8ED 100%);
+        }
+
+        .footer-message {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .footer-sub {
+            font-size: 14px;
+            color: var(--imessage-dark-grey);
+        }
+
+        .delivered {
+            font-size: 11px;
+            color: var(--imessage-dark-grey);
+            text-align: right;
+            margin-top: 4px;
+            margin-right: 4px;
+        }
+
+        /* ===== LIGHTBOX ===== */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border-radius: 8px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .hero-stats { gap: 24px; }
+            .stat-number { font-size: 36px; }
+            .bubble { max-width: 85%; }
+            .video-grid { grid-template-columns: 1fr; }
+            .photo-grid { grid-template-columns: repeat(3, 1fr); }
+            .highlights-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== TYPING INDICATOR ===== */
+        .typing-indicator {
+            display: inline-flex;
+            gap: 4px;
+            padding: 12px 16px;
+            background: var(--imessage-grey);
+            border-radius: 18px;
+            align-items: center;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
+
+        /* Nav bar */
+        .imessage-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(242,242,247,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 0.5px solid rgba(0,0,0,0.1);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(-100%);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .imessage-nav.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .imessage-nav .nav-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .imessage-nav .nav-chevron {
+            color: var(--imessage-blue);
+            font-size: 14px;
+            position: absolute;
+            left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Fixed nav (appears on scroll) -->
+<nav class="imessage-nav" id="nav">
+    <span class="nav-chevron">&lt; Messages</span>
+    <span class="nav-title">Matt & Nic</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+    </div>
+    <h1><span class="matt">Matt</span> <span class="amp">&</span> <span class="nic">Nic</span></h1>
+    <p class="hero-subtitle">A friendship told through iMessage</p>
+    <div class="hero-stats">
+        <div class="stat">
+            <div class="stat-number">2,289</div>
+            <div class="stat-label">Messages</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">54</div>
+            <div class="stat-label">Videos Shared</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">231</div>
+            <div class="stat-label">Photos Sent</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">11</div>
+            <div class="stat-label">Months Deep</div>
+        </div>
+    </div>
+</section>
+
+<!-- GREATEST HITS QUOTES -->
+<div class="section-header fade-in">
+    <h2>Greatest Hits</h2>
+    <p>The messages that define a friendship</p>
+</div>
+
+<section class="highlights fade-in">
+    <div class="highlights-grid">
+        <div class="highlight-card">
+            <div class="highlight-emoji">🔬</div>
+            <div class="highlight-title">The Microscope Factory</div>
+            <div class="highlight-quote">"Im about to fall asleep give me a ring in the morning to wake me for my job at the microscope factory"</div>
+            <div class="highlight-attribution">Matt, 10:40 PM</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">🍑</div>
+            <div class="highlight-title">Wrong App</div>
+            <div class="highlight-quote">"How to fix a purforated anus"<br>"How do I know if my anus is torn reddit"<br>"Wait this isn't Google"<br>"What the hell"</div>
+            <div class="highlight-attribution">Nic, having a moment</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">🎬</div>
+            <div class="highlight-title">Film Bros for Life</div>
+            <div class="highlight-quote">"Also goddamn we could make a movie"</div>
+            <div class="highlight-attribution">Matt, after watching the Donnie Darko documentary</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">🎯</div>
+            <div class="highlight-title">Creative Validation</div>
+            <div class="highlight-quote">"You cooked up some HEAT boy"</div>
+            <div class="highlight-attribution">Nic, on Matt's latest edit</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">📺</div>
+            <div class="highlight-title">CRT Supremacy</div>
+            <div class="highlight-quote">"Look at how good the Ring looks on vhs on my crt"</div>
+            <div class="highlight-attribution">Nic, living his best life</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">🎶</div>
+            <div class="highlight-title">Music Video Vision</div>
+            <div class="highlight-quote">"Like the way I look at a music video is there's like always the main sync edit underneath everything... then there's b roll stuff, then there is like these little clusters of craziness"</div>
+            <div class="highlight-attribution">Matt, laying down the law</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">🏝️</div>
+            <div class="highlight-title">For The Record</div>
+            <div class="highlight-quote">"IVE NEVER EVEN BEEN TO AN ISLAND LET ALONE EPSTEIN ISLAND!!"</div>
+            <div class="highlight-attribution">Nic, needing everyone to know</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">💀</div>
+            <div class="highlight-title">Editing Tools Review</div>
+            <div class="highlight-quote">"Ishit and shitstudio"</div>
+            <div class="highlight-attribution">Nic, describing his creative process</div>
+        </div>
+        <div class="highlight-card">
+            <div class="highlight-emoji">👑</div>
+            <div class="highlight-title">Hype Men</div>
+            <div class="highlight-quote">"Matt fr crushed. I honestly did not think I would ever get the chance to see him go hard like that"</div>
+            <div class="highlight-attribution">Nic, after Matt's show</div>
+        </div>
+    </div>
+</section>
+
+<!-- SAMPLE CONVERSATIONS -->
+<div class="section-header fade-in">
+    <h2>The Conversations</h2>
+    <p>Actual iMessages. You can't make this stuff up.</p>
+</div>
+
+<section class="conversation-section fade-in">
+    <div class="conversation-container">
+        <div class="conversation-header">
+            <div class="conversation-avatar">M&N</div>
+            <div class="conversation-name">Nic Jiosa</div>
+            <div class="conversation-detail">iMessage</div>
+        </div>
+
+        <!-- Convo 1: The Google Incident -->
+        <div class="message-group">
+            <div class="message-date">February 26, 2026</div>
+            <div class="bubble-row received">
+                <div class="bubble">How to fix a purforated anus</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">How do I know if my anus is torn reddit</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Wait this isn't Google</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">What the hell</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Alright pack it up buddy</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Time to go home</div>
+            </div>
+            <div class="delivered">Delivered</div>
+        </div>
+
+        <!-- Convo 2: Microscope Factory -->
+        <div class="message-group">
+            <div class="message-date">January 26, 2026</div>
+            <div class="bubble-row received">
+                <div class="bubble">Yo sorry I missed your call!! What's going on!</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Was just saying what's up</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Gimme like 10 min and I'll call you back 🫡</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Im about to fall asleep give me a ring in the morning to wake me for my job at the microscope factory</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Hahaha okay word I will</div>
+            </div>
+            <div class="delivered">Delivered</div>
+        </div>
+
+        <!-- Convo 3: Editing encouragement -->
+        <div class="message-group">
+            <div class="message-date">March 5, 2026</div>
+            <div class="bubble-row sent">
+                <div class="bubble">Dude</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Download device resolve</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Davinci</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Resolve</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">It's free, and we can edit together</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">On MacBook</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Okay!!!!</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">I digitized my vhs copy of the movie for this one</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Damn that's sick</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Yea we gotta get you editing</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">You could start a faceless page like them it's all just edits like this</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Please do that would be beast</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">And I'm not sure if I'd be any good at ACTUAL editing</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Like real editing</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Yes you would</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Especially the music video stuff</div>
+            </div>
+            <div class="delivered">Delivered</div>
+        </div>
+
+        <!-- Convo 4: Movie takes -->
+        <div class="message-group">
+            <div class="message-date">February 15, 2026</div>
+            <div class="bubble-row sent">
+                <div class="bubble">Lmao</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">That is a sick looking crt</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Please watch dark</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">I think I'm going to convert the whole show to a vhs</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Bro please</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Let me make the cover art</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">I will!!!</div>
+            </div>
+            <div class="delivered">Delivered</div>
+        </div>
+
+        <!-- Convo 5: Accepted vs Loser -->
+        <div class="message-group">
+            <div class="message-date">February 15, 2026 (later)</div>
+            <div class="bubble-row sent">
+                <div class="bubble">I'm watching accepted</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">The movie with Jonah hill?</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Yea didn't you tell me to watch it that it was Matt goated</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Coated</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">No I told you about Loser!</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">With Jason Biggs</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Oh damn haha</div>
+            </div>
+            <div class="delivered">Read 8:07 PM</div>
+        </div>
+
+        <!-- Convo 6: The masterpiece -->
+        <div class="message-group">
+            <div class="message-date">February 10, 2026</div>
+            <div class="bubble-row received">
+                <div class="bubble">Matt</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">I think I may have created my masterpiece</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Let's see</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">You hate it</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">😔😔</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Phon died</div>
+            </div>
+            <div class="bubble-row sent">
+                <div class="bubble">Lol how are you making these</div>
+            </div>
+            <div class="bubble-row received">
+                <div class="bubble">Ishit and shitstudio</div>
+            </div>
+            <div class="delivered">Delivered</div>
+        </div>
+
+        <!-- Typing indicator -->
+        <div class="bubble-row received" style="margin-top: 16px;">
+            <div class="typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VIDEOS -->
+<section class="video-section">
+    <div class="section-header fade-in">
+        <h2>The Edits</h2>
+        <p>54 videos. From GlitchArtStudio masterpieces to VHS bootlegs.</p>
+    </div>
+    <div class="video-grid fade-in" id="videoGrid">
+        <!-- Videos will be populated by JS -->
+    </div>
+</section>
+
+<!-- PHOTOS -->
+<section class="photo-section">
+    <div class="section-header fade-in">
+        <h2>The Photos</h2>
+        <p>231 images exchanged between two dudes who love movies way too much</p>
+    </div>
+    <div class="photo-grid fade-in" id="photoGrid">
+        <!-- Photos will be populated by JS -->
+    </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-section">
+    <div class="section-header fade-in">
+        <h2>The Timeline</h2>
+        <p>Key moments in the Matt & Nic cinematic universe</p>
+    </div>
+    <div class="timeline fade-in">
+        <div class="timeline-item">
+            <div class="timeline-date">April 2025</div>
+            <div class="timeline-content">First video shared. The beginning of an era.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">June 2025</div>
+            <div class="timeline-content">"turnover.mov" drops. Nic's editing game emerges.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">August 2025</div>
+            <div class="timeline-content">Screen recordings start flying. Two guys showing each other cool stuff at 2 AM.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">October 2025</div>
+            <div class="timeline-content">Blemish Abattoir edit. Matt sends Nic's work to the band. Music video discussions begin.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">January 2026</div>
+            <div class="timeline-content">The big 492MB edit from Nic. GlitchArtStudio era begins. CRT TV aesthetic goes crazy.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">February 2026</div>
+            <div class="timeline-content">Ryan Gosling deep dive. Place Beyond the Pines. Drive discourse. "Statistically that happens a lot when people watch Ryan Gosling movies."</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">February 2026</div>
+            <div class="timeline-content">The perforated anus incident. Nic has a Google moment in iMessage. The world is never the same.</div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">March 2026</div>
+            <div class="timeline-content">Matt discovers DaVinci Resolve. Nic becomes his editing mentor. "We could make a movie." They probably will.</div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<section class="footer">
+    <div class="footer-message">
+        <span style="color: var(--imessage-green);">iMessage</span>
+    </div>
+    <p class="footer-sub" style="margin-bottom: 24px;">Matt Matheson & Nic Jiosa</p>
+    <div style="max-width: 300px; margin: 0 auto;">
+        <div class="bubble-row sent" style="justify-content: center;">
+            <div class="bubble" style="background: var(--imessage-blue); color: white; border-radius: 18px;">dude we FOR REAL could make a movie</div>
+        </div>
+    </div>
+    <p class="footer-sub" style="margin-top: 32px;">Built with friendship and 2,289 text messages</p>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+    <img id="lightboxImg" src="" alt="">
+</div>
+
+<script>
+// Nav visibility on scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('visible', window.scrollY > window.innerHeight * 0.8);
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Populate video grid
+async function loadVideos() {
+    const grid = document.getElementById('videoGrid');
+    try {
+        const response = await fetch('media/videos/');
+        // If directory listing works, parse it; otherwise use our known list
+    } catch(e) {}
+
+    // Known video list with metadata
+    const videos = [
+        { file: "2025-04-25_nic-edit-1.mp4", date: "Apr 25, 2025", name: "The First Edit", sender: "nic" },
+        { file: "2025-06-01_turnover.mp4", date: "Jun 1, 2025", name: "Turnover", sender: "nic" },
+        { file: "2025-06-07_screen-rec-1.mp4", date: "Jun 7, 2025", name: "Screen Recording", sender: "nic" },
+        { file: "2025-06-22_nic-clip-1.mp4", date: "Jun 22, 2025", name: "Nic Clip", sender: "nic" },
+        { file: "2025-07-10_matt-clip-1.mp4", date: "Jul 10, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-07-30_nic-clip-2.mp4", date: "Jul 30, 2025", name: "Nic Clip", sender: "nic" },
+        { file: "2025-08-02_xclip.mp4", date: "Aug 2, 2025", name: "XCLIP", sender: "nic" },
+        { file: "2025-08-04_nic-edit-2.mp4", date: "Aug 4, 2025", name: "Late Night Edit", sender: "nic" },
+        { file: "2025-08-04_nic-edit-3.mp4", date: "Aug 4, 2025", name: "Late Night Edit 2", sender: "nic" },
+        { file: "2025-08-14_matt-screen-rec.mp4", date: "Aug 14, 2025", name: "Screen Recording", sender: "matt" },
+        { file: "2025-08-15_matt-screen-rec-2.mp4", date: "Aug 15, 2025", name: "Screen Recording 2", sender: "matt" },
+        { file: "2025-09-09_nic-clip-3.mp4", date: "Sep 9, 2025", name: "Nic Clip", sender: "nic" },
+        { file: "2025-10-05_nic-clip-4.mp4", date: "Oct 5, 2025", name: "Nic Clip", sender: "nic" },
+        { file: "2025-10-06_matt-clip-2.mp4", date: "Oct 6, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-10-09_nic-screen-rec.mp4", date: "Oct 9, 2025", name: "Screen Recording", sender: "nic" },
+        { file: "2025-10-09_matt-clip-3.mp4", date: "Oct 9, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-10-09_matt-clip-4.mp4", date: "Oct 9, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-10-09_nic-clip-5.mp4", date: "Oct 9, 2025", name: "Nic Clip", sender: "nic" },
+        { file: "2025-10-18_matt-clip-5.mp4", date: "Oct 18, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-10-27_blemish-abattoir.mp4", date: "Oct 27, 2025", name: "Blemish Abattoir Edit", sender: "matt" },
+        { file: "2025-10-28_nic-edit-4.mp4", date: "Oct 28, 2025", name: "Nic's Edit", sender: "nic" },
+        { file: "2025-10-28_nic-screen-rec-2.mp4", date: "Oct 28, 2025", name: "Screen Recording", sender: "nic" },
+        { file: "2025-10-28_matt-screen-rec-3.mp4", date: "Oct 28, 2025", name: "Screen Recording", sender: "matt" },
+        { file: "2025-10-29_nic-edit-5.mp4", date: "Oct 29, 2025", name: "Nic's Edit", sender: "nic" },
+        { file: "2025-11-13_nic-edit-6.mp4", date: "Nov 13, 2025", name: "Nic's Edit", sender: "nic" },
+        { file: "2025-11-18_matt-clip-6.mp4", date: "Nov 18, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-11-18_matt-clip-7.mp4", date: "Nov 18, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-11-19_matt-clip-8.mp4", date: "Nov 19, 2025", name: "Matt's Clip", sender: "matt" },
+        { file: "2025-12-06_nic-edit-7.mp4", date: "Dec 6, 2025", name: "Nic's Edit", sender: "nic" },
+        { file: "2025-12-25_nic-xmas-edit.mp4", date: "Dec 25, 2025", name: "Christmas Edit", sender: "nic" },
+        { file: "2026-01-02_nic-edit-8.mp4", date: "Jan 2, 2026", name: "New Year Edit", sender: "nic" },
+        { file: "2026-01-05_nic-big-edit.mp4", date: "Jan 5, 2026", name: "The Big Edit", sender: "nic" },
+        { file: "2026-01-06_nic-clip-6.mp4", date: "Jan 6, 2026", name: "Nic Clip", sender: "nic" },
+        { file: "2026-01-13_matt-clip-9.mp4", date: "Jan 13, 2026", name: "Matt's Clip", sender: "matt" },
+        { file: "2026-01-15_matt-clip-10.mp4", date: "Jan 15, 2026", name: "Matt's Clip", sender: "matt" },
+        { file: "2026-01-19_nic-glitch-1.mp4", date: "Jan 19, 2026", name: "GlitchArtStudio", sender: "nic" },
+        { file: "2026-01-19_nic-edit-9.mp4", date: "Jan 19, 2026", name: "Nic's Edit", sender: "nic" },
+        { file: "2026-01-25_nic-short-clip.mp4", date: "Jan 25, 2026", name: "Short Clip", sender: "nic" },
+        { file: "2026-01-27_matt-clip-11.mp4", date: "Jan 27, 2026", name: "Matt's Clip", sender: "matt" },
+        { file: "2026-01-29_nic-glitch-2.mp4", date: "Jan 29, 2026", name: "GlitchArtStudio 2", sender: "nic" },
+        { file: "2026-02-10_nic-screen-rec-3.mp4", date: "Feb 10, 2026", name: "This is Isaac", sender: "nic" },
+        { file: "2026-02-11_nic-clip-7.mp4", date: "Feb 11, 2026", name: "Nic Clip", sender: "nic" },
+        { file: "2026-02-11_nic-clip-8.mp4", date: "Feb 11, 2026", name: "Nic Clip", sender: "nic" },
+        { file: "2026-02-15_nic-ring-on-crt.mp4", date: "Feb 15, 2026", name: "The Ring on CRT", sender: "nic" },
+        { file: "2026-02-18_nic-edit-wip.mp4", date: "Feb 18, 2026", name: "WIP Edit", sender: "nic" },
+        { file: "2026-02-18_nic-edit-10.mp4", date: "Feb 18, 2026", name: "Nic's Edit", sender: "nic" },
+        { file: "2026-02-25_nic-edit-11.mp4", date: "Feb 25, 2026", name: "Got Another One", sender: "nic" },
+        { file: "2026-03-05_nic-edit-12.mp4", date: "Mar 5, 2026", name: "Nic's Edit", sender: "nic" },
+        { file: "2026-03-05_nic-edit-13.mp4", date: "Mar 5, 2026", name: "Nic's Edit", sender: "nic" },
+        { file: "2026-03-05_nic-edit-14.mp4", date: "Mar 5, 2026", name: "Nic's Edit", sender: "nic" },
+        { file: "2026-03-14_matt-screen-rec-4.mp4", date: "Mar 14, 2026", name: "Screen Recording", sender: "matt" },
+        { file: "2026-03-15_nic-latest-edit.mp4", date: "Mar 15, 2026", name: "Latest Edit", sender: "nic" },
+    ];
+
+    videos.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+            <video src="media/videos/${v.file}" controls preload="metadata" playsinline></video>
+            <div class="video-info">
+                <div class="video-date">${v.date}</div>
+                <div class="video-name">${v.name}</div>
+                <div class="video-sender ${v.sender}">from ${v.sender === 'matt' ? 'Matt' : 'Nic'}</div>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Populate photo grid
+async function loadPhotos() {
+    const grid = document.getElementById('photoGrid');
+
+    // We'll scan for images that exist
+    // For now, let's try loading them and only show ones that load successfully
+    const imgDir = 'media/images/';
+
+    // We'll generate expected filenames and try to load them
+    // This approach works because we named them with a counter
+    for (let i = 1; i <= 230; i++) {
+        const img = document.createElement('img');
+        // Try jpg first (most were converted to jpg)
+        const paddedName = `img_${i}`;
+        img.loading = 'lazy';
+        img.alt = `Shared photo ${i}`;
+
+        // We'll use a different approach - scan the actual files
+        // For now, show a placeholder message
+        img.style.display = 'none';
+        img.onload = function() { this.style.display = 'block'; };
+        img.onclick = function() {
+            document.getElementById('lightboxImg').src = this.src;
+            document.getElementById('lightbox').classList.add('active');
+        };
+
+        grid.appendChild(img);
+    }
+}
+
+// Initialize
+loadVideos();
+
+// Load actual image files
+async function loadActualPhotos() {
+    const grid = document.getElementById('photoGrid');
+    grid.innerHTML = '';
+
+    // Fetch the directory listing or use known filenames
+    // We'll try fetching each image and show ones that exist
+    const dates = [];
+
+    // Generate the image filenames we created during conversion
+    // They follow the pattern: YYYY-MM-DD_sender_N.jpg
+    // Let's use a smarter approach - just try loading numbered images
+    for (let i = 1; i <= 230; i++) {
+        // Try multiple naming patterns
+        const patterns = [
+            `media/images/*_${i}.jpg`,
+            `media/images/*_${i}.jpeg`
+        ];
+    }
+
+    // Actually, let's just scan all jpg files in the directory using a fetch
+    // For GitHub Pages, we'll need to create a manifest
+    try {
+        const resp = await fetch('photo-manifest.json');
+        const photos = await resp.json();
+        photos.forEach(filename => {
+            const img = document.createElement('img');
+            img.src = `media/images/${filename}`;
+            img.loading = 'lazy';
+            img.alt = 'Shared photo';
+            img.onload = function() { this.style.display = 'block'; };
+            img.onerror = function() { this.remove(); };
+            img.onclick = function() {
+                document.getElementById('lightboxImg').src = this.src;
+                document.getElementById('lightbox').classList.add('active');
+            };
+            grid.appendChild(img);
+        });
+    } catch(e) {
+        // Fallback: show message
+        grid.innerHTML = '<p style="text-align:center;color:#8E8E93;grid-column:1/-1;padding:40px;">Loading photos...</p>';
+    }
+}
+
+loadActualPhotos();
+</script>
+
+</body>
+</html>
